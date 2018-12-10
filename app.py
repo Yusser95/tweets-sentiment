@@ -36,7 +36,7 @@ def main():
 
 
 	labels =[s.date for s in ss] #["January","February","March","April","May","June","July","August"]
-	topic_tweets_sentement =  [] #[s.score for s in ss] #[10,9,8,7,6,4,7,8]
+	topic_tweets_sentement =  [s.score for s in ss] #[s.score for s in ss] #[10,9,8,7,6,4,7,8]
 	user_tweets_sentement = [s.score for s in ss] #[1,2,3,4,5,6,7,8]
 
 
@@ -46,9 +46,9 @@ def main():
 
 	tt= Topic.query.all()
 	topics = [{'id':t.id , 'name':t.name} for t in tt] #[{'id':1 , 'name':'option 1'},{'id':2 , 'name':'option 2'},{'id':3 , 'name':'option 3'}]
-	topics.append({'id':'*' , 'name':'general'})
+
 	selected_user = "u"
-	selected_topic = "t"
+	selected_topic = "tـ4"
 
 	if request.method == "POST":
 		selected_user = request.form.get('user')
@@ -57,9 +57,11 @@ def main():
 
 		ss= Sentiment.query.filter_by(topic_id=selected_topic[2:]).order_by(Sentiment.date).all()
 		topic_tweets_sentement = [s.score for s in ss]
-
-
-		selected_tweets = [t.id for t in tw if t.root_id == selected_user[2:]]
+		
+		tw = Tweet.query.all()
+		selected_tweets = [t.id for t in tw if str(t.root_id) == selected_user[2:]]
+		
+		print(selected_tweets)
 		ss= Sentiment.query.filter(Sentiment.tweet_id.in_(selected_tweets)).order_by(Sentiment.date).all()
 		user_tweets_sentement = [s.score for s in ss]
 
