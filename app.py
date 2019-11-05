@@ -35,9 +35,9 @@ def main():
 
 
 
-	labels =[s.date for s in ss] #["January","February","March","April","May","June","July","August"]
-	topic_tweets_sentement =  [s.score for s in ss] #[s.score for s in ss] #[10,9,8,7,6,4,7,8]
-	user_tweets_sentement = [s.score for s in ss] #[1,2,3,4,5,6,7,8]
+	labels =  [s.date for s in ss] #["January","February","March","April","May","June","July","August","test"]
+	topic_tweets_sentement =    [s.score for s in ss]  #[10,9,None,7,6,4,7,8]
+	user_tweets_sentement =   [s.score for s in ss]  #[1,2,3,4,5,6,None,8]
 
 
 
@@ -60,7 +60,7 @@ def main():
 		
 		tw = Tweet.query.all()
 		selected_tweets = [t.id for t in tw if str(t.root_id) == selected_user[2:]]
-		
+
 		print(selected_tweets)
 		ss= Sentiment.query.filter(Sentiment.tweet_id.in_(selected_tweets)).order_by(Sentiment.date).all()
 		user_tweets_sentement = [s.score for s in ss]
